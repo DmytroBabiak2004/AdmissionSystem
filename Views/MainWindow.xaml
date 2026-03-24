@@ -1,0 +1,127 @@
+<Window x:Class="AdmissionSystem.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:AdmissionSystem.Views"
+        xmlns:vm="clr-namespace:AdmissionSystem.ViewModels"
+        Title="Система адміністрування реєстрації абітурієнтів"
+        Height="820" Width="1300"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundBrush}">
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:ApplicantsViewModel}">
+            <views:ApplicantsView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SpecialtiesViewModel}">
+            <views:SpecialtiesView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ApplicationsViewModel}">
+            <views:ApplicationsView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:RankingViewModel}">
+            <views:RankingView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:StatisticsViewModel}">
+            <views:StatisticsView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ApplicantDetailsViewModel}">
+            <views:ApplicantDetailsView/>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <Border Grid.Column="0" Background="{StaticResource SidebarBrush}">
+            <DockPanel>
+                <!-- Logo / Title -->
+                <Border DockPanel.Dock="Top" Padding="20,24,20,20"
+                        BorderBrush="#1565C0" BorderThickness="0,0,0,1">
+                    <StackPanel>
+                        <TextBlock Text="🎓" FontSize="28" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Приймальна" Foreground="White" FontSize="14"
+                                   FontWeight="Bold" HorizontalAlignment="Center" Margin="0,6,0,2"/>
+                        <TextBlock Text="комісія" Foreground="#90CAF9" FontSize="12"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Navigation -->
+                <StackPanel DockPanel.Dock="Top" Margin="0,12,0,0">
+                    <Button Style="{StaticResource NavButton}"
+                            Command="{Binding NavigateApplicantsCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="👤" FontSize="16" Margin="0,0,10,0"/>
+                            <TextBlock Text="Абітурієнти"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}"
+                            Command="{Binding NavigateSpecialtiesCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🏫" FontSize="16" Margin="0,0,10,0"/>
+                            <TextBlock Text="Спеціальності"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}"
+                            Command="{Binding NavigateApplicationsCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📋" FontSize="16" Margin="0,0,10,0"/>
+                            <TextBlock Text="Заяви"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}"
+                            Command="{Binding NavigateRankingCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🏆" FontSize="16" Margin="0,0,10,0"/>
+                            <TextBlock Text="Рейтинг"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}"
+                            Command="{Binding NavigateStatisticsCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📊" FontSize="16" Margin="0,0,10,0"/>
+                            <TextBlock Text="Статистика"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <!-- Bottom user info -->
+                <Border DockPanel.Dock="Bottom" Padding="16,12"
+                        BorderBrush="#1565C0" BorderThickness="0,1,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Оператор" Foreground="#90CAF9" FontSize="11"/>
+                        <TextBlock Text="operator1" Foreground="White" FontSize="13" FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Border>
+            </DockPanel>
+        </Border>
+
+        <!-- Main content area -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="56"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Top bar -->
+            <Border Grid.Row="0" Background="White"
+                    BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
+                <Grid Margin="24,0">
+                    <TextBlock Text="{Binding CurrentPageTitle}"
+                               FontSize="18" FontWeight="SemiBold"
+                               VerticalAlignment="Center"
+                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                </Grid>
+            </Border>
+
+            <!-- Content -->
+            <ContentControl Grid.Row="1"
+                            Content="{Binding CurrentView}"
+                            Margin="0"/>
+        </Grid>
+    </Grid>
+</Window>
