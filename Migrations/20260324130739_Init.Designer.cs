@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdmissionSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260324084632_Init")]
+    [Migration("20260324130739_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -123,6 +123,9 @@ namespace AdmissionSystem.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("UploadedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("VerifiedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");

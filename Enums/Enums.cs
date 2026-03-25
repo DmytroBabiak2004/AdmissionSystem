@@ -23,6 +23,16 @@ public enum DocumentType
     MilitaryDocument = 6       // Військово-обліковий документ
 }
 
+public enum DocumentStatus
+{
+    Missing = 0,         // не подано
+    Provided = 1,        // подано
+    UnderReview = 2,     // на перевірці
+    Verified = 3,        // підтверджено
+    Rejected = 4,        // відхилено
+    NeedClarification = 5 // треба уточнення
+}
+
 public enum UserRole
 {
     Administrator = 0,

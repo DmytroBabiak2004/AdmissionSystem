@@ -1,10 +1,11 @@
+using AdmissionSystem.Enums;
+using AdmissionSystem.Models;
+using AdmissionSystem.Services;
 using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using AdmissionSystem.Enums;
-using AdmissionSystem.Services;
 
 namespace AdmissionSystem.Converters;
 
@@ -164,4 +165,44 @@ public class ActiveToColorConverter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         => throw new NotImplementedException();
+}
+
+public class DocStatusConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is ApplicantDocument doc)
+        {
+            if (!doc.IsProvided)
+                return "Не подано";
+
+            if (doc.IsVerified)
+                return "Підтверджено";
+
+            return "Подано";
+        }
+
+        return string.Empty;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => throw new NotImplementedException();
+}
+public class EnumToIntConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value == null)
+            return 0;
+
+        return (int)value;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value == null)
+            return Binding.DoNothing;
+
+        return Enum.ToObject(targetType, value);
+    }
 }

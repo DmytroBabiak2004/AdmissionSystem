@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using AdmissionSystem.Enums;
 
 namespace AdmissionSystem.Models;
-
 public class ApplicantDocument
 {
     public int Id { get; set; }
@@ -17,10 +16,10 @@ public class ApplicantDocument
     public string FileName { get; set; } = string.Empty;
 
     public bool IsProvided { get; set; }
-
     public bool IsVerified { get; set; }
 
     public DateTime? UploadedAt { get; set; }
+    public DateTime? VerifiedAt { get; set; }
 
     [MaxLength(500)]
     public string Comment { get; set; } = string.Empty;

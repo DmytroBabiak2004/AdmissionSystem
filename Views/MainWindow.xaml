@@ -3,12 +3,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="clr-namespace:AdmissionSystem.Views"
         xmlns:vm="clr-namespace:AdmissionSystem.ViewModels"
-        Title="Система адміністрування реєстрації абітурієнтів"
-        Height="820" Width="1300"
+        xmlns:c="clr-namespace:AdmissionSystem.Converters"
+        Title="Система адміністрування"
+        Height="900" Width="1440"
         WindowStartupLocation="CenterScreen"
-        Background="{StaticResource BackgroundBrush}">
+        WindowStyle="None" 
+        AllowsTransparency="True" 
+        Background="Transparent"
+        ResizeMode="CanResizeWithGrip">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="60" CornerRadius="32" GlassFrameThickness="0" UseAeroCaptionButtons="False" ResizeBorderThickness="8"/>
+    </WindowChrome.WindowChrome>
 
     <Window.Resources>
+        
         <DataTemplate DataType="{x:Type vm:ApplicantsViewModel}">
             <views:ApplicantsView/>
         </DataTemplate>
@@ -27,101 +36,237 @@
         <DataTemplate DataType="{x:Type vm:ApplicantDetailsViewModel}">
             <views:ApplicantDetailsView/>
         </DataTemplate>
+
+        <Style x:Key="MacControlBtn" TargetType="Button">
+            <Setter Property="Width" Value="14"/>
+            <Setter Property="Height" Value="14"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="7" BorderBrush="#30000000" BorderThickness="0.5"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.5" Color="{Binding Background.Color, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PremiumNavButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#7A7A85"/>
+            <Setter Property="Height" Value="54"/>
+            <Setter Property="Margin" Value="16,6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="16">
+                                <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="24,0,0,0"/>
+                            </Border>
+                            <Border x:Name="Indicator" Width="5" Height="28" CornerRadius="2.5" Background="#007AFF" HorizontalAlignment="Left" VerticalAlignment="Center" Opacity="0" Margin="0,0,0,0">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="0.5" Color="#007AFF"/>
+                                </Border.Effect>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#60FFFFFF"/>
+                                <Setter TargetName="Indicator" Property="Opacity" Value="1"/>
+                                <Setter Property="Foreground" Value="#1C1C1E"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="NavIcon" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe Fluent Icons, Segoe UI Symbol"/>
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="Margin" Value="0,0,20,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
     </Window.Resources>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="220"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <!-- Sidebar -->
-        <Border Grid.Column="0" Background="{StaticResource SidebarBrush}">
-            <DockPanel>
-                <!-- Logo / Title -->
-                <Border DockPanel.Dock="Top" Padding="20,24,20,20"
-                        BorderBrush="#1565C0" BorderThickness="0,0,0,1">
-                    <StackPanel>
-                        <TextBlock Text="🎓" FontSize="28" HorizontalAlignment="Center"/>
-                        <TextBlock Text="Приймальна" Foreground="White" FontSize="14"
-                                   FontWeight="Bold" HorizontalAlignment="Center" Margin="0,6,0,2"/>
-                        <TextBlock Text="комісія" Foreground="#90CAF9" FontSize="12"
-                                   HorizontalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-
-                <!-- Navigation -->
-                <StackPanel DockPanel.Dock="Top" Margin="0,12,0,0">
-                    <Button Style="{StaticResource NavButton}"
-                            Command="{Binding NavigateApplicantsCommand}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="👤" FontSize="16" Margin="0,0,10,0"/>
-                            <TextBlock Text="Абітурієнти"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Style="{StaticResource NavButton}"
-                            Command="{Binding NavigateSpecialtiesCommand}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="🏫" FontSize="16" Margin="0,0,10,0"/>
-                            <TextBlock Text="Спеціальності"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Style="{StaticResource NavButton}"
-                            Command="{Binding NavigateApplicationsCommand}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="📋" FontSize="16" Margin="0,0,10,0"/>
-                            <TextBlock Text="Заяви"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Style="{StaticResource NavButton}"
-                            Command="{Binding NavigateRankingCommand}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="🏆" FontSize="16" Margin="0,0,10,0"/>
-                            <TextBlock Text="Рейтинг"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Style="{StaticResource NavButton}"
-                            Command="{Binding NavigateStatisticsCommand}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="📊" FontSize="16" Margin="0,0,10,0"/>
-                            <TextBlock Text="Статистика"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-
-                <!-- Bottom user info -->
-                <Border DockPanel.Dock="Bottom" Padding="16,12"
-                        BorderBrush="#1565C0" BorderThickness="0,1,0,0">
-                    <StackPanel>
-                        <TextBlock Text="Оператор" Foreground="#90CAF9" FontSize="11"/>
-                        <TextBlock Text="operator1" Foreground="White" FontSize="13" FontWeight="SemiBold"/>
-                    </StackPanel>
-                </Border>
-            </DockPanel>
-        </Border>
-
-        <!-- Main content area -->
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="56"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <!-- Top bar -->
-            <Border Grid.Row="0" Background="White"
-                    BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
-                <Grid Margin="24,0">
-                    <TextBlock Text="{Binding CurrentPageTitle}"
-                               FontSize="18" FontWeight="SemiBold"
-                               VerticalAlignment="Center"
-                               Foreground="{StaticResource TextPrimaryBrush}"/>
+    <Border CornerRadius="32" ClipToBounds="True">
+        <Grid>
+            <Border Background="#F2F4F8">
+                <Grid>
+                    <Ellipse Fill="#25007AFF" Width="1000" Height="1000" Margin="-400,-400,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Ellipse.Effect>
+                            <BlurEffect Radius="400"/>
+                        </Ellipse.Effect>
+                    </Ellipse>
+                    <Ellipse Fill="#20AF52DE" Width="900" Height="900" Margin="0,400,-300,0" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                        <Ellipse.Effect>
+                            <BlurEffect Radius="350"/>
+                        </Ellipse.Effect>
+                    </Ellipse>
+                    <Ellipse Fill="#1500C6FF" Width="800" Height="800" Margin="300,-200,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Ellipse.Effect>
+                            <BlurEffect Radius="450"/>
+                        </Ellipse.Effect>
+                    </Ellipse>
                 </Grid>
             </Border>
 
-            <!-- Content -->
-            <ContentControl Grid.Row="1"
-                            Content="{Binding CurrentView}"
-                            Margin="0"/>
+            <Border Background="#8AFFFFFF"/>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="340"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Background="#99FFFFFF" CornerRadius="28" Margin="24,24,12,24" BorderBrush="#A0FFFFFF" BorderThickness="1.5">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="30" ShadowDepth="10" Opacity="0.03" Color="#000000"/>
+                    </Border.Effect>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="28,28,0,0" WindowChrome.IsHitTestVisibleInChrome="True">
+                            <Button Style="{StaticResource MacControlBtn}" Background="#FF5F56" x:Name="BtnClose" ToolTip="Закрити"/>
+                            <Button Style="{StaticResource MacControlBtn}" Background="#FFBD2E" x:Name="BtnMinimize" ToolTip="Згорнути"/>
+                            <Button Style="{StaticResource MacControlBtn}" Background="#27C93F" x:Name="BtnMaximize" ToolTip="На весь екран"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="0" Margin="28,100,28,50">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0" Width="52" Height="52" CornerRadius="16" Margin="0,0,20,0">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                            <GradientStop Color="#007AFF" Offset="0.0"/>
+                                            <GradientStop Color="#0056B3" Offset="1.0"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="20" ShadowDepth="8" Opacity="0.25" Color="#007AFF"/>
+                                    </Border.Effect>
+                                    <TextBlock Text="&#xE80F;" FontFamily="Segoe Fluent Icons" Foreground="White" FontSize="26" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="Приймальна" FontSize="24" FontWeight="Bold" Foreground="#1C1C1E"/>
+                                    <TextBlock Text="К О М І С І Я" FontSize="12" FontWeight="Black" Foreground="#007AFF" Margin="2,4,0,0" Opacity="0.9"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Margin="0,10,0,0">
+                            <Button Style="{StaticResource PremiumNavButton}" Command="{Binding NavigateApplicantsCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE77B;" Style="{StaticResource NavIcon}"/>
+                                    <TextBlock Text="Абітурієнти" FontSize="16" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource PremiumNavButton}" Command="{Binding NavigateSpecialtiesCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE7BE;" Style="{StaticResource NavIcon}"/>
+                                    <TextBlock Text="Спеціальності" FontSize="16" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource PremiumNavButton}" Command="{Binding NavigateApplicationsCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE8A5;" Style="{StaticResource NavIcon}"/>
+                                    <TextBlock Text="Заяви" FontSize="16" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource PremiumNavButton}" Command="{Binding NavigateRankingCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE819;" Style="{StaticResource NavIcon}"/>
+                                    <TextBlock Text="Рейтинг" FontSize="16" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource PremiumNavButton}" Command="{Binding NavigateStatisticsCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE90F;" Style="{StaticResource NavIcon}"/>
+                                    <TextBlock Text="Статистика" FontSize="16" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+
+                        <Border Grid.Row="2" Margin="24,0,24,24" Padding="16" Background="#FFFFFFFF" CornerRadius="20" BorderBrush="#E5E5EA" BorderThickness="1">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="25" ShadowDepth="5" Opacity="0.04" Color="#000000"/>
+                            </Border.Effect>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0" Width="46" Height="46" CornerRadius="23">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                            <GradientStop Color="#1C1C1E" Offset="0"/>
+                                            <GradientStop Color="#2C2C2E" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <TextBlock Text="OP" Foreground="White" FontSize="15" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+
+                                <StackPanel Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock Text="Олександр М." FontSize="15" FontWeight="Bold" Foreground="#1C1C1E"/>
+                                    <TextBlock Text="Адміністратор" FontSize="13" FontWeight="Medium" Foreground="#8E8E93" Margin="0,3,0,0"/>
+                                </StackPanel>
+
+                                <Button Grid.Column="2" Background="Transparent" BorderThickness="0" Cursor="Hand" VerticalAlignment="Center">
+                                    <TextBlock Text="&#xE713;" FontFamily="Segoe Fluent Icons" FontSize="20" Foreground="#8E8E93"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Column="1" Margin="12,24,24,24">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="40,20,40,30">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Р О Б О Ч И Й   П Р О С Т І Р" FontSize="12" FontWeight="Bold" Foreground="#8E8E93" Margin="0,0,0,8"/>
+                            <TextBlock Text="{Binding CurrentPageTitle, FallbackValue='Панель управління'}" 
+                   FontSize="38" FontWeight="ExtraBold" 
+                   Foreground="#1C1C1E"/>
+                        </StackPanel>
+                    </Grid>
+                    
+                    <Border Grid.Row="1" Background="#FFFFFFFF" CornerRadius="28" BorderBrush="#D1D1D6" BorderThickness="0.5">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="50" ShadowDepth="15" Opacity="0.05" Color="#001530"/>
+                        </Border.Effect>
+                        <ContentControl Content="{Binding CurrentView}" Margin="40"/>
+                    </Border>
+                </Grid>
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </Window>

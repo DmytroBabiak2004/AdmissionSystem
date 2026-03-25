@@ -83,6 +83,7 @@ namespace AdmissionSystem.Migrations
                     IsProvided = table.Column<bool>(type: "bit", nullable: false),
                     IsVerified = table.Column<bool>(type: "bit", nullable: false),
                     UploadedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    VerifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Comment = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
                 },
                 constraints: table =>

@@ -122,6 +122,9 @@ namespace AdmissionSystem.Migrations
                     b.Property<DateTime?>("UploadedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("VerifiedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicantId");

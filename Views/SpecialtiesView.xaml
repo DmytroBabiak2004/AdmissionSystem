@@ -1,50 +1,330 @@
 <UserControl x:Class="AdmissionSystem.Views.SpecialtiesView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid Background="{StaticResource BackgroundBrush}">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             TextElement.FontFamily="Segoe UI"
+             TextElement.FontSize="14"
+             TextElement.Foreground="#0F172A"
+             Background="#F8FAFC">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="TextMain" Color="#0F172A"/>
+        <SolidColorBrush x:Key="TextMuted" Color="#64748B"/>
+        <SolidColorBrush x:Key="BorderColor" Color="#E2E8F0"/>
+        <SolidColorBrush x:Key="CardBackground" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="PrimaryColor" Color="#4F46E5"/>
+        <SolidColorBrush x:Key="PrimaryHover" Color="#4338CA"/>
+        <SolidColorBrush x:Key="DangerColor" Color="#EF4444"/>
+        <SolidColorBrush x:Key="DangerHover" Color="#DC2626"/>
+
+        <Style x:Key="PremiumTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="{StaticResource CardBackground}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextMain}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="CaretBrush" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" 
+                                          VerticalAlignment="Center" Focusable="false" 
+                                          HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#CBD5E1"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="true">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                                <Setter Property="Padding" Value="13,0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PremiumTextArea" TargetType="TextBox">
+            <Setter Property="Background" Value="{StaticResource CardBackground}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextMain}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="Height" Value="90"/>
+            <Setter Property="CaretBrush" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="AcceptsReturn" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" 
+                                          VerticalAlignment="Top" Focusable="false" 
+                                          HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#CBD5E1"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="true">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                                <Setter Property="Padding" Value="13,9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PremiumButton" TargetType="Button">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.97" ScaleY="0.97" CenterX="0.5" CenterY="0.5"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="BtnPrimary" BasedOn="{StaticResource PremiumButton}" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource PrimaryHover}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="BtnSecondary" BasedOn="{StaticResource PremiumButton}" TargetType="Button">
+            <Setter Property="Background" Value="#F1F5F9"/>
+            <Setter Property="Foreground" Value="{StaticResource TextMain}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E2E8F0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="BtnDanger" BasedOn="{StaticResource PremiumButton}" TargetType="Button">
+            <Setter Property="Background" Value="#FEE2E2"/>
+            <Setter Property="Foreground" Value="{StaticResource DangerColor}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FECACA"/>
+                    <Setter Property="Foreground" Value="{StaticResource DangerHover}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="RowHeight" Value="56"/>
+            <Setter Property="ColumnHeaderHeight" Value="50"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource BorderColor}"/>
+            <Setter Property="VerticalGridLinesBrush" Value="Transparent"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserSortColumns" Value="True"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource TextMuted}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="{StaticResource CardBackground}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F8FAFC"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#EEF2FF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Background="Transparent" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource PrimaryHover}"/>
+                    <Setter Property="FontWeight" Value="Medium"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="FormLabel">
+            <Setter Property="Foreground" Value="{StaticResource TextMuted}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Margin" Value="2,16,0,6"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="32">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0" Margin="20">
+        <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Toolbar -->
-            <Border Grid.Row="0" Style="{StaticResource Card}" Margin="0,0,0,16" Padding="16,12">
-                <StackPanel Orientation="Horizontal">
-                    <Button Content="+ Додати" Style="{StaticResource PrimaryButton}"
-                            Command="{Binding AddCommand}" Margin="0,0,8,0"/>
-                    <Button Content="✏ Редагувати" Style="{StaticResource GrayButton}"
-                            Command="{Binding EditCommand}" Margin="0,0,8,0"/>
-                    <Button Content="🔄 Активна/Неактивна" Style="{StaticResource GrayButton}"
-                            Command="{Binding ToggleActiveCommand}" Margin="0,0,8,0"/>
-                    <Button Content="🗑 Видалити" Style="{StaticResource DangerButton}"
-                            Command="{Binding DeleteCommand}"/>
-                </StackPanel>
-            </Border>
+            <Grid Grid.Row="0" Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            <!-- DataGrid -->
-            <Border Grid.Row="1" Style="{StaticResource Card}" Padding="0">
-                <DataGrid ItemsSource="{Binding Specialties}"
-                          SelectedItem="{Binding SelectedSpecialty}">
+                <Border Grid.Column="0" Background="{StaticResource CardBackground}" CornerRadius="8" BorderThickness="1" BorderBrush="{StaticResource BorderColor}" 
+                        Height="42" Width="320" HorizontalAlignment="Left">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="&#xE721;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" 
+                                   Foreground="{StaticResource TextMuted}" FontSize="15" 
+                                   VerticalAlignment="Center" Margin="14,0,10,0"/>
+
+                        <TextBlock Grid.Column="1" Text="Пошук спеціальності..." 
+                                   Foreground="#94A3B8" VerticalAlignment="Center" IsHitTestVisible="False">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <TextBox x:Name="SearchBox" Grid.Column="1" 
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                                 Background="Transparent" BorderThickness="0" 
+                                 VerticalContentAlignment="Center" FontSize="14" CaretBrush="{StaticResource PrimaryColor}"/>
+                    </Grid>
+                </Border>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Style="{StaticResource BtnPrimary}" Command="{Binding AddCommand}" Margin="0,0,12,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE710;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" VerticalAlignment="Center" Margin="0,0,8,0" FontSize="16"/>
+                            <TextBlock Text="Додати" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource BtnSecondary}" Command="{Binding EditCommand}" Margin="0,0,12,0" ToolTip="Редагувати">
+                        <TextBlock Text="&#xE70F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" VerticalAlignment="Center" FontSize="16"/>
+                    </Button>
+
+                    <Button Style="{StaticResource BtnSecondary}" Command="{Binding ToggleActiveCommand}" Margin="0,0,12,0" ToolTip="Активна/Неактивна">
+                        <TextBlock Text="&#xE8DE;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" VerticalAlignment="Center" FontSize="16"/>
+                    </Button>
+
+                    <Button Style="{StaticResource BtnDanger}" Command="{Binding DeleteCommand}" ToolTip="Видалити">
+                        <TextBlock Text="&#xE74D;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" VerticalAlignment="Center" FontSize="16"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <Border Grid.Row="1" Background="{StaticResource CardBackground}" CornerRadius="12" BorderBrush="{StaticResource BorderColor}" BorderThickness="1" ClipToBounds="True">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.03" Color="#000000" Direction="270"/>
+                </Border.Effect>
+
+                <DataGrid ItemsSource="{Binding Specialties}" SelectedItem="{Binding SelectedSpecialty}" Margin="0,8">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Код" Binding="{Binding Code}" Width="70"/>
-                        <DataGridTextColumn Header="Назва спеціальності" Binding="{Binding Name}" Width="*"/>
-                        <DataGridTextColumn Header="Факультет" Binding="{Binding Faculty}" Width="220"/>
-                        <DataGridTextColumn Header="Бюджет" Binding="{Binding BudgetPlaces}" Width="75"/>
-                        <DataGridTextColumn Header="Контракт" Binding="{Binding ContractPlaces}" Width="85"/>
-                        <DataGridTemplateColumn Header="Статус" Width="110">
+                        <DataGridTextColumn Header="КОД" Binding="{Binding Code}" Width="90" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="НАЗВА СПЕЦІАЛЬНОСТІ" Binding="{Binding Name}" Width="*" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="ФАКУЛЬТЕТ" Binding="{Binding Faculty}" Width="*" IsReadOnly="True"/>
+
+                        <DataGridTextColumn Header="БЮДЖЕТ" Binding="{Binding BudgetPlaces}" Width="100" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="КОНТРАКТ" Binding="{Binding ContractPlaces}" Width="100" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTemplateColumn Header="СТАТУС" Width="130" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Border Background="{Binding IsActive, Converter={StaticResource ActiveToColorConverter}}"
-                                            CornerRadius="4" Padding="8,3" Margin="4,2">
+                                            CornerRadius="6" Padding="12,4" HorizontalAlignment="Left" VerticalAlignment="Center">
                                         <TextBlock Text="{Binding IsActive, Converter={StaticResource ActiveToStringConverter}}"
-                                                   Foreground="White" FontSize="11" FontWeight="SemiBold"
-                                                   HorizontalAlignment="Center"/>
+                                                   Foreground="White" FontSize="12" FontWeight="SemiBold"/>
                                     </Border>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -54,52 +334,75 @@
             </Border>
         </Grid>
 
-        <!-- Edit panel -->
         <Border Grid.Column="1"
                 Visibility="{Binding IsEditPanelVisible, Converter={StaticResource BoolToVisibilityConverter}}"
-                Width="380" Background="White"
-                BorderBrush="{StaticResource BorderBrush}" BorderThickness="1,0,0,0">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <StackPanel Margin="24">
-                    <TextBlock Style="{StaticResource SectionHeader}" Text="Редагування спеціальності"/>
+                Width="400" Background="{StaticResource CardBackground}" CornerRadius="16" Margin="32,0,0,0"
+                BorderBrush="{StaticResource BorderColor}" BorderThickness="1">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="40" ShadowDepth="8" Opacity="0.06" Color="#000000" Direction="270"/>
+            </Border.Effect>
 
-                    <TextBlock Style="{StaticResource FormLabel}" Text="Код спеціальності *"/>
-                    <TextBox Text="{Binding EditingSpecialty.Code, UpdateSourceTrigger=PropertyChanged}"
-                             Margin="0,0,0,12"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                    <TextBlock Style="{StaticResource FormLabel}" Text="Назва спеціальності *"/>
-                    <TextBox Text="{Binding EditingSpecialty.Name, UpdateSourceTrigger=PropertyChanged}"
-                             Margin="0,0,0,12"/>
+                <Border Grid.Row="0" BorderBrush="{StaticResource BorderColor}" BorderThickness="0,0,0,1" Padding="24,20">
+                    <TextBlock Text="Редагування спеціальності" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextMain}"/>
+                </Border>
 
-                    <TextBlock Style="{StaticResource FormLabel}" Text="Факультет"/>
-                    <TextBox Text="{Binding EditingSpecialty.Faculty, UpdateSourceTrigger=PropertyChanged}"
-                             Margin="0,0,0,12"/>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="24,8,24,24">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource FormLabel}" Text="Код спеціальності *" Margin="2,8,0,6"/>
+                        <TextBox Style="{StaticResource PremiumTextBox}" Text="{Binding EditingSpecialty.Code, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <TextBlock Style="{StaticResource FormLabel}" Text="Кількість бюджетних місць"/>
-                    <TextBox Text="{Binding EditingSpecialty.BudgetPlaces, UpdateSourceTrigger=PropertyChanged}"
-                             Margin="0,0,0,12"/>
+                        <TextBlock Style="{StaticResource FormLabel}" Text="Назва спеціальності *"/>
+                        <TextBox Style="{StaticResource PremiumTextBox}" Text="{Binding EditingSpecialty.Name, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <TextBlock Style="{StaticResource FormLabel}" Text="Кількість контрактних місць"/>
-                    <TextBox Text="{Binding EditingSpecialty.ContractPlaces, UpdateSourceTrigger=PropertyChanged}"
-                             Margin="0,0,0,12"/>
+                        <TextBlock Style="{StaticResource FormLabel}" Text="Факультет"/>
+                        <TextBox Style="{StaticResource PremiumTextBox}" Text="{Binding EditingSpecialty.Faculty, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <TextBlock Style="{StaticResource FormLabel}" Text="Опис"/>
-                    <TextBox Text="{Binding EditingSpecialty.Description, UpdateSourceTrigger=PropertyChanged}"
-                             Height="80" TextWrapping="Wrap" AcceptsReturn="True"
-                             VerticalScrollBarVisibility="Auto" Margin="0,0,0,12"/>
+                        <Grid Margin="0,16,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                    <CheckBox IsChecked="{Binding EditingSpecialty.IsActive}"
-                              Content="Активна" Margin="0,0,0,24"
-                              FontFamily="Segoe UI" FontSize="13"/>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Style="{StaticResource FormLabel}" Text="Бюджетні місця" Margin="2,0,0,6"/>
+                                <TextBox Style="{StaticResource PremiumTextBox}" Text="{Binding EditingSpecialty.BudgetPlaces, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
 
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Content="Скасувати" Style="{StaticResource GrayButton}"
-                                Command="{Binding CancelCommand}" Margin="0,0,10,0"/>
-                        <Button Content="💾 Зберегти" Style="{StaticResource SuccessButton}"
-                                Command="{Binding SaveCommand}"/>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Style="{StaticResource FormLabel}" Text="Контрактні місця" Margin="2,0,0,6"/>
+                                <TextBox Style="{StaticResource PremiumTextBox}" Text="{Binding EditingSpecialty.ContractPlaces, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Style="{StaticResource FormLabel}" Text="Опис"/>
+                        <TextBox Style="{StaticResource PremiumTextArea}" Text="{Binding EditingSpecialty.Description, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <CheckBox IsChecked="{Binding EditingSpecialty.IsActive}" Margin="4,24,0,0">
+                            <TextBlock Text="Активна спеціальність" FontSize="14" FontWeight="Medium" Foreground="{StaticResource TextMain}" Margin="8,-1,0,0"/>
+                        </CheckBox>
                     </StackPanel>
-                </StackPanel>
-            </ScrollViewer>
+                </ScrollViewer>
+
+                <Border Grid.Row="2" Background="#F8FAFC" CornerRadius="0,0,16,16" Padding="24,16" BorderBrush="{StaticResource BorderColor}" BorderThickness="0,1,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="Скасувати" Style="{StaticResource BtnSecondary}" Command="{Binding CancelCommand}"/>
+                        <Button Grid.Column="2" Content="Зберегти" Style="{StaticResource BtnPrimary}" Command="{Binding SaveCommand}"/>
+                    </Grid>
+                </Border>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>
